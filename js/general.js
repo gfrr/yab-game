@@ -2,7 +2,7 @@ $(document).ready(function(){
  $("#game-play").toggle();
  start();
  selectShip();
-
+ rotateShip();
 });
 
 
@@ -34,7 +34,27 @@ function addShipOnGrid(){
      console.log("called");
      $(".col").hover(function(){
        $(this).addClass("test");
+       $(this).next().addClass("test");
+       var next = $(this).parent().next(); //horizontal targeting
+       var index = $(this).index();
+       var t = $(next).children(".col"); //vertical targeting
+       $(t[index]).addClass("test"); //vertical targeting
+
+       console.log($(".col")[index]);
+       console.log($(this).parent().index(), $(this).index());
+       console.log($(this).next()[0] !== undefined); //checking horizontal boundaries
+       $(this).click(function(){
+         $(this).addClass("final");
+       });
      },function(){
        $(this).removeClass("test");
+       $(this).next().removeClass("test");
      });
+}
+
+
+function rotateShip() {
+  $("#rotate").click(function(){
+    $(this).toggleClass("vertical");
+  });
 }

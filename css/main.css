@@ -135,13 +135,17 @@
 }
 
 .col {
-  
-  border-bottom: 2px solid #68715B;
-  border-right: 2px solid #68715B;
+
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
   background: #4CADDB;
   flex: 1;
 }
 
 .test {
-  background: rgba(0,0,0, 0.5);
+  background: rgba(0,0,0, 0.3);
+}
+
+.final {
+  background: #68715B;
 }
