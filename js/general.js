@@ -10,6 +10,7 @@ function start(){
   $("#start").click(function(){
     $("#intro").toggle();
     $("#game-play").toggle();
+    appendGrid("#player-ships", 10);
     $("#enemy-ships").toggle();
   });
 }
@@ -56,5 +57,16 @@ function addShipOnGrid(){
 function rotateShip() {
   $("#rotate").click(function(){
     $(this).toggleClass("vertical");
+  });
+}
+
+//helper function that avoids the manual writing of the game grids
+function appendGrid(target, size) {
+  _.times(size, function(){
+     var row = $("<div class='row'></div>");
+     _.times(size, function(){
+       $(row).append("<div class='col'></div>");
+     });
+     $(target).append(row);
   });
 }
