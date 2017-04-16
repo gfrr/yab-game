@@ -1,17 +1,132 @@
 * {
   box-sizing: border-box;
   background-color: #EEEEEE;
+  font-family: 'Rubik Mono One', sans-serif;
+}
 
+#intro {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  background: #4CADDB;
+  width: 80%;
+  height: 600px;
+  margin: 5% auto;
+}
+
+#title {
+  background: rgba(0,0,0,0);
+}
+
+#title h1 {
+  font-size: 6rem;
+  color: #A3A09B;
+  text-shadow: 2px 2px #68715B;
+  background: rgba(0,0,0,0);
+}
+
+
+#start {
+  background: rgba(0,0,0,0);
+}
+
+#start:hover {
+  cursor: pointer;
+}
+
+#start h3 {
+    color: white;
+    background: rgba(0,0,0,0);
+    text-shadow: 2px 2px #68715B;
+}
+
+#start h3:hover {
+   color: rgb(255, 100, 100);
+}
+
+#game-play {
+  margin: 5% auto;
+  display: flex;
+}
+
+#setup {
+  margin: 2% 0 5% 5%;
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+}
+
+#setup h2 {
+  color: #A3A09B;
+  text-shadow: 2px 2px #68715B;
+}
+
+#ships {
+  display: flex;
+  flex-flow: column;
+  background: #A3A09B;
+  padding: 10px;
+  border-bottom: 2px solid #68715B;
+  border-right: 2px solid #68715B;
+}
+
+#ships div {
+  background: rgba(0,0,0,0);
+}
+
+#ships div:hover {
+  cursor: pointer;
+}
+
+#ships div h4{
+  background: rgba(0,0,0,0);
+  color: white;
+  text-shadow: 2px 2px #68715B;
+}
+
+#ships div h4:hover {
+  color: rgb(255, 100, 100);
+}
+
+#rotate {
+  margin-top: 2%;
+  text-shadow: 2px 2px #68715B;
+  padding: 5px;
+  background: #A3A09B;
+  border-bottom: 2px solid #68715B;
+  border-right: 2px solid #68715B;
+  text-align: center;
+}
+
+#rotate:hover {
+  cursor: pointer;
+}
+
+#rotate h4 {
+  background: rgba(0,0,0,0);
+  color: white;
+  text-shadow: 2px 2px #68715B;
+}
+
+#rotate h4:hover {
+  color: #F6F955;
 }
 
 #enemy-ships {
-  margin: 5%;
-  width: 35%;
   display: flex;
   flex-flow: column;
-  border-bottom: 2px solid black;
+  margin: 0 auto;
+  width: 40%;
 }
 
+
+#player-ships {
+  margin: 0 auto;
+  width: 40%;
+  display: flex;
+  flex-flow: column;
+}
 
 .row {
 
@@ -20,9 +135,9 @@
 }
 
 .col {
-  border-bottom: 2px solid black;
-  border-right: 2px solid black;
-  background: #a0a0a0;
-  flex: 1;
 
+  border-bottom: 2px solid #68715B;
+  border-right: 2px solid #68715B;
+  background: #4CADDB;
+  flex: 1;
 }
