@@ -4,6 +4,19 @@
   font-family: 'Rubik Mono One', sans-serif;
 }
 
+@keyframes wave {
+  0%   {background-color: #4CADDB;}
+  25%  {background-color: #6fbde2;}
+  50%  {background-color: #6fbde2;}
+  100% {background-color: #4CADDB;}
+}
+
+@keyframes wobble {
+  from {margin: 0px;}
+  to {margin-left: -5px; margin-top: -10px;}
+
+}
+
 #intro {
   display: flex;
   flex-flow: column;
@@ -13,6 +26,9 @@
   width: 80%;
   height: 600px;
   margin: 5% auto;
+  animation-name: wave;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
 }
 
 #title {
@@ -29,6 +45,7 @@
 
 #start {
   background: rgba(0,0,0,0);
+
 }
 
 #start:hover {
@@ -39,6 +56,11 @@
     color: white;
     background: rgba(0,0,0,0);
     text-shadow: 2px 2px #68715B;
+    animation-name: wobble;
+    animation-duration: 0.6s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
 }
 
 #start h3:hover {
