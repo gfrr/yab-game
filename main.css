@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+
+}
+
+#enemy-ships {
+  margin: 5%;
+  width: 35%;
+  display: flex;
+  flex-flow: column;
+  border-bottom: 2px solid black;
+}
+
+
+.row {
+
+  height: 50px;
+  display: flex;
+}
+
+.col {
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+  background: #a0a0a0;
+  flex: 1;
+
+}
