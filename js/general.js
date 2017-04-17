@@ -10,7 +10,7 @@ function appendGrid(target, size) {
   _.times(size, function(){
      var row = $("<div class='row'></div>");
      _.times(size, function(){
-       $(row).append("<div class='col' value='0'></div>");
+       $(row).append("<div class='col water' ></div>");
      });
      $(target).append(row);
   });
@@ -42,24 +42,18 @@ function returnShipType(elem){
 function addShipOnGrid(size, caller){
      console.log("called");
      $(".col").hover(function(){
-       generateShip(this, size);
-      //  $(this).addClass("test");
-      //  $(this).next().addClass("test"); //horizontal targeting
-      //  var next = $(this).parent().next();
-      //  var index = $(this).index();
-      //  var t = $(next).children(".col"); //vertical targeting
-      //  $(t[index]).addClass("test"); //vertical targeting
-       //
-      //  console.log($(".col")[index]);
-      //  console.log($(this).parent().index(), $(this).index());
-      //  console.log($(this).next()[0] !== undefined); //checking horizontal boundaries
+       var check = generateShip(this, size);
+       console.log($(".test").hasClass("water"));
+
        $(this).click(function(){
-           if($(".test").length == size && $(".test").attr("value") == 0){
-           $(".test").addClass("final");
-           $(".final").attr("value", 1);
-           size = 0;
-           $(caller).toggle();
-         }
+          if(check){
+              $(".test").addClass("final");
+              $(".test").removeClass("water");
+              $(".test").removeClass("test");
+              $(caller).remove();
+              size = 0;
+          }
+
        });
      },function(){
        $(".col").removeClass("test");
@@ -76,12 +70,30 @@ function rotateShip() {
 function generateShip(target, size){
     var currentTarget = target;
     if($("#rotate").hasClass("vertical")){
-    } else {
-        for(var i = 0; i < size; i++){
-          if(i > 0){
+      for(var i = 0, index = $(currentTarget).index(); i < size; i++){
+        if(i > 0){
+          currentTarget = $(currentTarget).parent().next();
+          currentTarget = $(currentTarget).children(".col");
+          currentTarget = $(currentTarget[index]);
+        }
+        if(!$(currentTarget).hasClass("water")) break;
+        $(currentTarget).addClass("test");
+      }
+    }
+     else {
+        for(var j = 0; j < size; j++){
+          if(j > 0){
             currentTarget = $(currentTarget).next();
           }
+          if(!$(currentTarget).hasClass("water")) break;
           $(currentTarget).addClass("test");
         }
       }
+
+   if($(".test").length != size){
+     console.log("puff!");
+     $(".test").removeClass("test");
+     return false;
+   }
+   return true;
 }
