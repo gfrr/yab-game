@@ -141,7 +141,9 @@
   margin: 0 auto;
   width: 30%;
 }
-
+#enemy-ships .col:hover {
+  cursor: crosshair;
+}
 
 #player-ships {
   margin: 0 auto;

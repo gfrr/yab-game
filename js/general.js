@@ -1,9 +1,12 @@
 $(document).ready(function(){
  var playerFleet = new Fleet();
+ var enemyFleet = new Fleet();
+ enemyFleet.generateEnemyFleet();
  $("#game-play").toggle();
  start();
  selectShip(playerFleet);
  rotateShip();
+
  var gameReady = setInterval(function(){
 
    if($("#ships").children().length === 0){
@@ -13,7 +16,9 @@ $(document).ready(function(){
      appendGrid("#enemy-ships", 10);
      $("#enemy-ships").css("border-bottom", "10px solid rgb(255, 100, 100)");
      $("#enemy-ships").toggle();
+     fire(playerFleet, enemyFleet);
      clearInterval(gameReady);
+
    }
  }, 400);
 
@@ -110,4 +115,20 @@ function generateShip(target, size){
      return false;
    }
    return true;
+}
+
+
+function fire(fleetAttacker, fleetTarget){
+  $(".col").hover(function(){
+        if($(this).parent().parent().is("#enemy-ships")){
+            $(this).click(function(){
+              var cord = {
+                y: $(this).parent().index(),
+                x: $(this).index()
+              };
+               fleetAttacker.shot(cord, fleetTarget.grid);
+            });
+        }
+
+      });
 }
