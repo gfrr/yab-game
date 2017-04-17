@@ -17,14 +17,15 @@ Fleet.prototype.generateEnemyFleet = function(){
   fleet.push(new Ship(1)); //submarine
   fleet.push(new Ship(1)); //submarine
   _.each(fleet, function(ship){
-    ship._draw(context.grid);
+    ship.draw(context.grid);
   });
 };
 
 
-function Ship(size, grid, direction, coordinates ) {
+function Ship(size, direction, coordinates) {
    this.size = size;
    this.direction = direction !== undefined ? direction : Math.floor(Math.random() * 2);
+   this.coordinates = coordinates;
 }
 
 function randomCord(size, direction, grid) {
@@ -45,10 +46,10 @@ function randomCord(size, direction, grid) {
   }
   xy.x = cordX;
   xy.y = cordY;
-  return checkIsFree(xy, size, direction, grid) ? xy : randomCord(size, direction, grid);
+  return checkIsFree(size, direction, xy, grid) ? xy : randomCord(size, direction, grid);
 }
 
-function checkIsFree(cords, size, direction, grid){
+function checkIsFree(size, direction, cords, grid){
   if(direction == 1) {
     for(var y = cords.y; y < cords.y + size+1; y++)
       if(grid[y][cords.x] !== 0) return false;
@@ -60,8 +61,10 @@ function checkIsFree(cords, size, direction, grid){
   return true;
 }
 
-Ship.prototype._draw = function(grid) {
-  var xy = randomCord(this.size, this.direction, grid);
+Ship.prototype.draw = function(grid) {
+  var xy;
+  if(this.coordinates) xy = this.coordinates;
+  else xy = randomCord(this.size, this.direction, grid);
   if(this.direction == 1) {
     for(var y = xy.y; y < xy.y + this.size; y++)
       grid[y][xy.x] = this.size;
@@ -71,8 +74,22 @@ Ship.prototype._draw = function(grid) {
   }
 };
 
+Fleet.prototype.shot = function(cords, grid){
+  if(this._detectHit(cords, grid)){
+    console.log("hit!");
+    grid[cords.y][cords.x] = "x";
+  } else console.log("miss!");
+};
 
-var test = new Fleet();
+Fleet.prototype._detectHit = function(cords, grid){
+   return grid[cords.y][cords.x] !== 0;
+};
 
-test.generateEnemyFleet();
-console.log(test.grid);
+Fleet.prototype.loss = function(){
+  var test = this.grid.slice(0);
+  return _.filter(_.flatten(test), function(elem){
+    if(elem == "x") return elem;
+  }).length == 18;
+
+
+};

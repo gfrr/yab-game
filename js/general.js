@@ -1,8 +1,22 @@
 $(document).ready(function(){
+ var playerFleet = new Fleet();
  $("#game-play").toggle();
  start();
- selectShip();
+ selectShip(playerFleet);
  rotateShip();
+ var gameReady = setInterval(function(){
+
+   if($("#ships").children().length === 0){
+     $("#setup").toggle();
+     $("#player-ships").css("width", "30%");
+     $("#player-ships").css("border-bottom", "10px solid #DAF7A6");
+     appendGrid("#enemy-ships", 10);
+     $("#enemy-ships").css("border-bottom", "10px solid rgb(255, 100, 100)");
+     $("#enemy-ships").toggle();
+     clearInterval(gameReady);
+   }
+ }, 400);
+
 });
 
 //helper function that avoids the manual writing of the game grids
@@ -25,9 +39,9 @@ function start(){
   });
 }
 
-function selectShip(check){
+function selectShip(fleet){
   $(".s").click(function(){
-     addShipOnGrid(returnShipType($(this)), this);
+     addShipOnGrid(returnShipType($(this)), this, fleet);
   });
 }
 
@@ -39,26 +53,28 @@ function returnShipType(elem){
   if(elem.hasClass("submarine")) return 1;
 }
 
-function addShipOnGrid(size, caller){
-     console.log("called");
+function addShipOnGrid(size, caller, fleet){
      $(".col").hover(function(){
        var check = generateShip(this, size);
-       console.log($(".test").hasClass("water"));
-
        $(this).click(function(){
           if(check){
               $(".test").addClass("final");
               $(".test").removeClass("water");
               $(".test").removeClass("test");
               $(caller).remove();
+              var dir = $("#rotate").hasClass("vertical") ? 1 : 0;
+              var cord = {
+                y: $(this).parent().index(),
+                x: $(this).index()
+              };
+              var ship = new Ship(size, dir, cord);
+              ship.draw(fleet.grid);
               size = 0;
           }
-
        });
      },function(){
        $(".col").removeClass("test");
      });
-
 }
 
 function rotateShip() {
@@ -89,9 +105,7 @@ function generateShip(target, size){
           $(currentTarget).addClass("test");
         }
       }
-
    if($(".test").length != size){
-     console.log("puff!");
      $(".test").removeClass("test");
      return false;
    }
