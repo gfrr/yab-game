@@ -1,6 +1,7 @@
 $(document).ready(function(){
  var playerFleet = new Fleet();
  var enemyFleet = new Fleet();
+ enemyFleet.aiLevel = 1;
  enemyFleet.generateEnemyFleet();
  $("#game-play").toggle();
  start();
@@ -126,9 +127,33 @@ function fire(fleetAttacker, fleetTarget){
                 y: $(this).parent().index(),
                 x: $(this).index()
               };
-               fleetAttacker.shot(cord, fleetTarget.grid);
+              var playerHit = fleetAttacker.shot(cord, fleetTarget.grid);
+              console.log("player shot->");
+               if(playerHit){
+                  $(this).addClass("hit");
+                  if(fleetTarget.loss()) alert("YOU WON AYYY");
+               } else $(this).addClass("miss");
+               var enemyHit = fleetTarget.aiShoot(fleetAttacker.grid);
+               if(enemyHit){
+                 updateGrid("#player-ships", fleetAttacker.grid);
+               }
+               if(fleetAttacker.loss()) alert("YOU LOST!");
             });
         }
-
       });
+}
+
+function updateGrid(target, grid){
+  var hit = [];
+    for(var y = 0; y < grid.length; y++){
+       for(x = 0; x < grid[y].length; x++){
+         if(grid[y][x] == "x") hit.push({x: x, y: y});
+       }
+     }
+    _.each(hit, function(elem){
+        var t = $(target).children()[elem.y];
+        t = $(t).children()[elem.x];
+        $(t).addClass("hit");
+        $(t).removeClass("final");
+    });
 }

@@ -4,6 +4,7 @@ function Fleet(){
      grid.push(_.fill(new Array(10), 0));
   });
   this.grid = grid;
+  this.aiLevel = 0; //0 human player 1 easy 2 normal 3 hard
 }
 
 Fleet.prototype.generateEnemyFleet = function(){
@@ -78,7 +79,11 @@ Fleet.prototype.shot = function(cords, grid){
   if(this._detectHit(cords, grid)){
     console.log("hit!");
     grid[cords.y][cords.x] = "x";
-  } else console.log("miss!");
+    return true;
+  } else{
+    console.log("miss!");
+    return false;
+  }
 };
 
 Fleet.prototype._detectHit = function(cords, grid){
@@ -91,5 +96,23 @@ Fleet.prototype.loss = function(){
     if(elem == "x") return elem;
   }).length == 18;
 
+
+};
+
+Fleet.prototype.aiShoot = function (grid){
+  var alreadyHit = [];
+  if(this.aiLevel == 1){
+    for(var y = 0; y < grid.length; y++){
+       for(x = 0; x < grid[y].length; x++){
+         if(grid[y][x] == "x") alreadyHit.push({x: x, y: y});
+       }
+    }
+    var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+    while(_.some(alreadyHit, randomCord)){
+        randomCord  = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+    }
+    console.log("computer shooting ->");
+    return(this.shot(randomCord, grid));
+}
 
 };

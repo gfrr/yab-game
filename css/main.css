@@ -11,6 +11,10 @@
   to {margin-left: -5px; margin-top: -2px;}
 }
 
+@keyframes splash {
+
+}
+
 * {
   box-sizing: border-box;
   background-color: #EEEEEE;
@@ -170,6 +174,19 @@
   background: rgba(0,0,0, 0.3);
 }
 
+.hit {
+  background-color: rgb(255, 100, 100);
+}
+
 .final {
   background: #68715B;
+}
+
+.miss {
+  background: rgba(255,255,255,0.1);
+  background: -webkit-radial-gradient(circle, white, #2d6783, #4CADDB); /* Safari */
+  background: -o-radial-gradient(circle, white, #2d6783, #4CADDB); /* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(circle, white, #2d6783, #4CADDB); /* Firefox 3.6 to 15 */
+  background: radial-gradient(circle, white, #4CADDB, #4CADDB, #4CADDB); /* Standard syntax */
+
 }
