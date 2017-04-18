@@ -3,6 +3,8 @@ $(document).ready(function(){
  var enemyFleet = new Fleet();
  enemyFleet.aiLevel = 1;
  enemyFleet.generateEnemyFleet();
+ settings();
+ $("#settings").toggle();
  $("#game-play").toggle();
  start();
  selectShip(playerFleet);
@@ -22,8 +24,15 @@ $(document).ready(function(){
 
    }
  }, 400);
-
 });
+
+function settings(){
+  $("#set").click(function(){
+    $("#intro").toggle();
+    $("#settings").toggle();
+  });
+}
+
 
 //helper function that avoids the manual writing of the game grids
 function appendGrid(target, size) {
@@ -68,7 +77,7 @@ function addShipOnGrid(size, caller, fleet){
               $(".test").removeClass("water");
               $(".test").removeClass("test");
               $(caller).remove();
-              var dir = $("#rotate").hasClass("vertical") ? 1 : 0;
+              var dir = $(".rotate").hasClass("vertical") ? 1 : 0;
               var cord = {
                 y: $(this).parent().index(),
                 x: $(this).index()
@@ -84,14 +93,14 @@ function addShipOnGrid(size, caller, fleet){
 }
 
 function rotateShip() {
-  $("#rotate").click(function(){
+  $(".rotate").click(function(){
     $(this).toggleClass("vertical");
   });
 }
 
 function generateShip(target, size){
     var currentTarget = target;
-    if($("#rotate").hasClass("vertical")){
+    if($(".rotate").hasClass("vertical")){
       for(var i = 0, index = $(currentTarget).index(); i < size; i++){
         if(i > 0){
           currentTarget = $(currentTarget).parent().next();
@@ -120,31 +129,31 @@ function generateShip(target, size){
 
 
 function fire(fleetAttacker, fleetTarget){
-  
+
             $(".col").on("click", function(event){
               if($(this).parent().parent().is("#enemy-ships")){
+              if(!$(this).hasClass("hit") && (!$(this).hasClass("miss"))){
+                var cord = {
+                  y: $(this).parent().index(),
+                  x: $(this).index()
+                };
 
-              var cord = {
-                y: $(this).parent().index(),
-                x: $(this).index()
-              };
+                var playerHit = fleetAttacker.shot(cord, fleetTarget.grid);
 
-              var playerHit = fleetAttacker.shot(cord, fleetTarget.grid);
-              console.log("player shot->");
-               if(playerHit){
-                  $(this).addClass("hit");
-               } else $(this).addClass("miss");
+                 if(playerHit){
+                    $(this).addClass("hit");
+                 } else $(this).addClass("miss");
 
-                 fleetTarget.aiShoot(fleetAttacker.grid);
-                 updateGrid("#player-ships", fleetAttacker.grid);
-                 if(fleetTarget.loss()) alert("YOU WON AYYY");
-                 if(fleetAttacker.loss()) alert("YOU LOST!");
-                 }
-            });
+                var interval = setTimeout(function(){
+                  fleetTarget.aiShoot(fleetAttacker.grid);
+                updateGrid("#player-ships", fleetAttacker.grid);
+                checkWinner(fleetAttacker, fleetTarget);
+              }, 500);
+                }
+              }
 
+          });
 }
-
-
 
 function updateGrid(target, grid){
   var hitAndMiss = [];
@@ -165,4 +174,14 @@ function updateGrid(target, grid){
 
         $(t).removeClass("final");
     });
+}
+
+function checkWinner(fleetA, fleetB){
+  if(fleetB.loss()) {
+    alert("YOU WON AYYY");
+    location.reload();
+  } if(fleetA.loss()){
+    alert("GAME OVER");
+    location.reload();
+  }
 }

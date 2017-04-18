@@ -76,12 +76,14 @@ Ship.prototype.draw = function(grid) {
 };
 
 Fleet.prototype.shot = function(cords, grid){
+  var value = 0;
   if(this._detectHit(cords, grid)){
+    value = grid[cords.y][cords.x];
     grid[cords.y][cords.x] = "x";
-    return true;
+    return value;
   } else{
     grid[cords.y][cords.x] = "m";
-    return false;
+    return value;
   }
 };
 
@@ -94,24 +96,53 @@ Fleet.prototype.loss = function(){
   return _.filter(_.flatten(test), function(elem){
     if(elem == "x") return elem;
   }).length == 18;
-
-
 };
 
 Fleet.prototype.aiShoot = function (grid){
-  var alreadyHit = [];
+  var alreadyHit = shotsMap(grid);
   if(this.aiLevel == 1){
-    for(var y = 0; y < grid.length; y++){
-       for(x = 0; x < grid[y].length; x++){
-         if(grid[y][x] == "x") alreadyHit.push({x: x, y: y});
-       }
-    }
     var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-    while(_.some(alreadyHit, randomCord)){
-        randomCord  = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+    if(_.some(alreadyHit, randomCord)){
+        console.log("recursion");
+        return this.aiShoot(grid);
     }
     console.log(randomCord);
     return(this.shot(randomCord, grid));
+  }
+};
+
+
+function shotsMap(grid){
+  var alreadyHit = [];
+  for(var y = 0; y < grid.length; y++){
+     for(x = 0; x < grid[y].length; x++){
+       if(grid[y][x] == "x" || grid[y][x] == "m") alreadyHit.push({x: x, y: y});
+     }
+  }
+  return alreadyHit;
 }
+
+Fleet.prototype._aiLevel2 = function(grid, previousHit) {
+   var pHit = previousHit;
+   var alreadyHit = shotsMap(grid);
+   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+   var value = 0;
+   if(!previousHit) if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid);
+   else if(!previousHit.direction){
+       var flatOrStanding = Math.floor(Math.random() * 2), plusOrMinus = Math.floor(Math.random() * 2);
+       if(flatOrStanding){
+         if(plusOrMinus) {
+            if(previousHit.y + 1 > grid.length || grid[previousHit.y + 1][previousHit.x] == "x" || grid[previousHit.y + 1][previousHit.x] == "m") this._aiLevel2(grid, previousHit);
+            randomCord = {x: previousHit.x, y: previousHit.y + 1};
+            value = this.shot(randomCord, grid);
+            if(value > 0) pHit.direction = 3;
+            
+
+         }
+       }
+     }
+
+
+
 
 };

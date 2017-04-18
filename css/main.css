@@ -11,8 +11,9 @@
   to {margin-left: -5px; margin-top: -2px;}
 }
 
-@keyframes splash {
-
+@keyframes glow {
+  from {border: 2px solid #F6F955}
+  to {border: 0}
 }
 
 * {
@@ -46,28 +47,57 @@
   background: rgba(0,0,0,0);
 }
 
-#start {
+#front-buttons{
+  width: 55%;
   background: rgba(0,0,0,0);
-
+  display: flex;
+  justify-content: space-between;
 }
 
-#start:hover {
-  cursor: pointer;
+#settings {
+  width: 80%;
+  height: 600px;
+  margin: 5% auto;
+  animation-name: wave;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  background: #4CADDB;
 }
 
-#start h3 {
-    color: white;
-    background: rgba(0,0,0,0);
-    text-shadow: 2px 2px #68715B;
-    animation-name: wobble;
-    animation-duration: 0.6s;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
+#settings > div {
+  background: rgba(0,0,0,0);
 }
 
-#start h3:hover {
-   color: rgb(255, 100, 100);
+#settings > div > h2{
+  background: rgba(0,0,0,0);
+  color: white;
+  text-shadow: 2px 2px #68715B;
+}
+
+#opt{
+  display: flex;
+  background: rgba(0,0,0,0);
+  width: 45%;
+  justify-content: space-around;
+}
+#opt div {
+  height: 160px;
+}
+
+#easy img{
+  width: 80px;
+  height: 80px;
+  background: rgba(0,0,0,0);
+}
+
+#hard img {
+  width: 40px;
+  height: 80px;
+  background: rgba(0,0,0,0);
 }
 
 #game-play {
@@ -115,30 +145,6 @@
   color: rgb(255, 100, 100);
 }
 
-#rotate {
-  margin-top: 2%;
-  text-shadow: 2px 2px #68715B;
-  padding: 5px;
-  background: #A3A09B;
-  border-bottom: 2px solid #68715B;
-  border-right: 2px solid #68715B;
-  text-align: center;
-}
-
-#rotate:hover {
-  cursor: pointer;
-}
-
-#rotate h4 {
-  background: rgba(0,0,0,0);
-  color: white;
-  text-shadow: 2px 2px #68715B;
-}
-
-#rotate h4:hover {
-  color: #F6F955;
-}
-
 #enemy-ships {
   display: flex;
   flex-flow: column;
@@ -156,8 +162,70 @@
   flex-flow: column;
 }
 
-.row {
+#stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #4CADDB;
+  width: 80%;
+  height: 300px;
+  margin: 5% auto;
+}
 
+.fb{
+  background: rgba(0,0,0,0);
+}
+
+.fb:hover{
+    cursor: pointer;
+}
+
+.fb h3{
+  color: white;
+  background: rgba(0,0,0,0);
+  text-shadow: 2px 2px #68715B;
+  animation-name: wobble;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+.fb h3:hover{
+  color: rgb(255, 100, 100);
+}
+
+.rotate {
+  margin-top: 2%;
+  text-shadow: 2px 2px #68715B;
+  padding: 5px;
+  background: #A3A09B;
+  border-bottom: 2px solid #68715B;
+  border-right: 2px solid #68715B;
+  text-align: center;
+}
+
+.rotate:hover {
+  cursor: pointer;
+}
+
+.rotate h4 {
+  background: rgba(0,0,0,0);
+  color: white;
+  text-shadow: 2px 2px #68715B;
+}
+
+.rotate h4:hover {
+  color: #F6F955;
+}
+
+.vertical {
+  background: #68715B;
+  border-bottom: 4px solid #A3A09B;
+  border-right: 4px solid #A3A09B;
+}
+
+.row {
   height: 50px;
   display: flex;
 }
@@ -176,6 +244,9 @@
 
 .hit {
   background-color: rgb(255, 100, 100);
+  animation-name: glow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
 }
 
 .final {
@@ -188,5 +259,7 @@
   background: -o-radial-gradient(circle, white, #2d6783, #4CADDB); /* Opera 11.6 to 12.0 */
   background: -moz-radial-gradient(circle, white, #2d6783, #4CADDB); /* Firefox 3.6 to 15 */
   background: radial-gradient(circle, white, #4CADDB, #4CADDB, #4CADDB); /* Standard syntax */
-
+  animation-name: glow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
 }
