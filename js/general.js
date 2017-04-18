@@ -120,40 +120,49 @@ function generateShip(target, size){
 
 
 function fire(fleetAttacker, fleetTarget){
-  $(".col").hover(function(){
-        if($(this).parent().parent().is("#enemy-ships")){
-            $(this).click(function(){
+  
+            $(".col").on("click", function(event){
+              if($(this).parent().parent().is("#enemy-ships")){
+
               var cord = {
                 y: $(this).parent().index(),
                 x: $(this).index()
               };
+
               var playerHit = fleetAttacker.shot(cord, fleetTarget.grid);
               console.log("player shot->");
                if(playerHit){
                   $(this).addClass("hit");
-                  if(fleetTarget.loss()) alert("YOU WON AYYY");
                } else $(this).addClass("miss");
-               var enemyHit = fleetTarget.aiShoot(fleetAttacker.grid);
-               if(enemyHit){
+
+                 fleetTarget.aiShoot(fleetAttacker.grid);
                  updateGrid("#player-ships", fleetAttacker.grid);
-               }
-               if(fleetAttacker.loss()) alert("YOU LOST!");
+                 if(fleetTarget.loss()) alert("YOU WON AYYY");
+                 if(fleetAttacker.loss()) alert("YOU LOST!");
+                 }
             });
-        }
-      });
+
 }
 
+
+
 function updateGrid(target, grid){
-  var hit = [];
+  var hitAndMiss = [];
     for(var y = 0; y < grid.length; y++){
        for(x = 0; x < grid[y].length; x++){
-         if(grid[y][x] == "x") hit.push({x: x, y: y});
+         if(grid[y][x] == "x") hitAndMiss.push({x: x, y: y, hm: "x"});
+         if(grid[y][x] == "m") hitAndMiss.push({x: x, y: y, hm: "m"});
        }
      }
-    _.each(hit, function(elem){
+
+    _.each(hitAndMiss, function(elem){
         var t = $(target).children()[elem.y];
         t = $(t).children()[elem.x];
-        $(t).addClass("hit");
+        if(elem.hm == "x")
+          $(t).addClass("hit");
+          else
+          $(t).addClass("miss");
+
         $(t).removeClass("final");
     });
 }

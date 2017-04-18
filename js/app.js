@@ -77,17 +77,16 @@ Ship.prototype.draw = function(grid) {
 
 Fleet.prototype.shot = function(cords, grid){
   if(this._detectHit(cords, grid)){
-    console.log("hit!");
     grid[cords.y][cords.x] = "x";
     return true;
   } else{
-    console.log("miss!");
+    grid[cords.y][cords.x] = "m";
     return false;
   }
 };
 
 Fleet.prototype._detectHit = function(cords, grid){
-   return grid[cords.y][cords.x] !== 0;
+   return grid[cords.y][cords.x] !== 0 && grid[cords.y][cords.x] != "m";
 };
 
 Fleet.prototype.loss = function(){
@@ -111,7 +110,7 @@ Fleet.prototype.aiShoot = function (grid){
     while(_.some(alreadyHit, randomCord)){
         randomCord  = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
     }
-    console.log("computer shooting ->");
+    console.log(randomCord);
     return(this.shot(randomCord, grid));
 }
 
