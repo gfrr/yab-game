@@ -85,19 +85,11 @@
   justify-content: space-around;
 }
 #opt div {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
   height: 160px;
-}
-
-#easy img{
-  width: 80px;
-  height: 80px;
-  background: rgba(0,0,0,0);
-}
-
-#hard img {
-  width: 40px;
-  height: 80px;
-  background: rgba(0,0,0,0);
 }
 
 #game-play {
@@ -180,6 +172,10 @@
     cursor: pointer;
 }
 
+.fb:hover h3 {
+  color: rgb(255, 100, 100);
+}
+
 .fb h3{
   color: white;
   background: rgba(0,0,0,0);
@@ -191,8 +187,39 @@
   animation-timing-function: ease-in-out;
 }
 
-.fb h3:hover{
+.sb {
+  background: rgba(0,0,0,0);
+}
+
+.sb:hover{
+    cursor: pointer;
+}
+
+.sb:hover h3{
   color: rgb(255, 100, 100);
+}
+
+.sb h3{
+  color: white;
+  background: rgba(0,0,0,0);
+  text-shadow: 2px 2px #68715B;
+  animation-name: wobble;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+.easy img{
+  width: 80px;
+  height: 80px;
+  background: rgba(0,0,0,0);
+}
+
+.hard img {
+  width: 40px;
+  height: 80px;
+  background: rgba(0,0,0,0);
 }
 
 .rotate {
@@ -209,14 +236,14 @@
   cursor: pointer;
 }
 
+.rotate:hover h4{
+  color: #F6F955;
+}
+
 .rotate h4 {
   background: rgba(0,0,0,0);
   color: white;
   text-shadow: 2px 2px #68715B;
-}
-
-.rotate h4:hover {
-  color: #F6F955;
 }
 
 .vertical {

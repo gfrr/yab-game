@@ -1,7 +1,9 @@
 $(document).ready(function(){
  var playerFleet = new Fleet();
  var enemyFleet = new Fleet();
+ $("#stats").toggle();
  enemyFleet.aiLevel = 1;
+ setDifficulty(enemyFleet);
  enemyFleet.generateEnemyFleet();
  settings();
  $("#settings").toggle();
@@ -21,18 +23,27 @@ $(document).ready(function(){
      $("#enemy-ships").toggle();
      fire(playerFleet, enemyFleet);
      clearInterval(gameReady);
-
    }
  }, 400);
 });
 
-function settings(){
+function settings(fleet){
   $("#set").click(function(){
+    $("#intro").toggle();
+    $("#settings").toggle();
+
+  });
+}
+
+function setDifficulty(fleet) {
+  $(".sb").click(function(){
+    if($(this).hasClass("easy")) fleet.aiLevel = 1;
+    if($(this).hasClass("hard")) fleet.aiLevel = 2;
+    console.log(fleet.aiLevel);
     $("#intro").toggle();
     $("#settings").toggle();
   });
 }
-
 
 //helper function that avoids the manual writing of the game grids
 function appendGrid(target, size) {

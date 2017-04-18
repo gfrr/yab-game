@@ -136,13 +136,7 @@ Fleet.prototype._aiLevel2 = function(grid, previousHit) {
             randomCord = {x: previousHit.x, y: previousHit.y + 1};
             value = this.shot(randomCord, grid);
             if(value > 0) pHit.direction = 3;
-            
-
          }
        }
      }
-
-
-
-
 };
