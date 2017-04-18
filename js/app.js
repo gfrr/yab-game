@@ -116,7 +116,7 @@ function shotsMap(grid){
   var alreadyHit = [];
   for(var y = 0; y < grid.length; y++){
      for(x = 0; x < grid[y].length; x++){
-       if(grid[y][x] == "x" || grid[y][x] == "m") alreadyHit.push({x: x, y: y});
+       if(grid[y][x] == "x" || grid[y][x] == "m") alreadyHit.push({x: x, y: y, hm: grid[y][x]});
      }
   }
   return alreadyHit;

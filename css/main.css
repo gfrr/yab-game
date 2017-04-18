@@ -93,7 +93,7 @@
 }
 
 #game-play {
-  margin: 5% auto;
+  margin: 2% auto;
   display: flex;
 }
 
@@ -127,14 +127,14 @@
   cursor: pointer;
 }
 
+#ships div:hover h4{
+  color: rgb(255, 100, 100);
+}
+
 #ships div h4{
   background: rgba(0,0,0,0);
   color: white;
   text-shadow: 2px 2px #68715B;
-}
-
-#ships div h4:hover {
-  color: rgb(255, 100, 100);
 }
 
 #enemy-ships {
@@ -155,14 +155,19 @@
 }
 
 #stats {
+  margin-top: -2%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
   background: #4CADDB;
   width: 80%;
-  height: 300px;
-  margin: 5% auto;
+  height: 200px;
+  margin: 0 auto;
+  animation-name: wave;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
 }
+
+
 
 .fb{
   background: rgba(0,0,0,0);
@@ -258,13 +263,27 @@
 }
 
 .col {
-
   border-bottom: 2px solid white;
   border-right: 2px solid white;
   background: #4CADDB;
   flex: 1;
 }
 
+.st {
+  width: 40%;
+  background:  #A3A09B;
+  color: white;
+  text-shadow: 2px 2px #68715B;
+  text-align: center;
+}
+
+.st h2{
+  background: rgba(0,0,0,0);
+}
+
+.st div {
+  background: rgba(0,0,0,0);
+}
 .test {
   background: rgba(0,0,0, 0.3);
 }
