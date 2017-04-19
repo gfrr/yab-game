@@ -122,21 +122,86 @@ function shotsMap(grid){
   return alreadyHit;
 }
 
-Fleet.prototype._aiLevel2 = function(grid, previousHit) {
-   var pHit = previousHit;
-   var alreadyHit = shotsMap(grid);
-   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-   var value = 0;
-   if(!previousHit) if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid);
-   else if(!previousHit.direction){
-       var flatOrStanding = Math.floor(Math.random() * 2), plusOrMinus = Math.floor(Math.random() * 2);
+/*
+function PreviousHit(x,y,size,direction,streak) {
+ this.x = x,
+ this.y = y,
+ this.size = size,
+ this.direction: direction,
+ this.streak: streak,
+}
+*/
+
+Fleet.prototype._aiLevel2 = function(grid, previousHit){
+  var alreadyHit = shotsMap(grid);
+  var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+  var direction = 0; //1 north 2 est 3 south 4 west
+  if(!previousHit.x) if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
+  else{
+    if(!previousHit.direction){
+      var flatOrStanding = Math.floor(Math.random() * 2), plusOrMinus = Math.floor(Math.random() * 2);
        if(flatOrStanding){
          if(plusOrMinus) {
+            //south
             if(previousHit.y + 1 > grid.length || grid[previousHit.y + 1][previousHit.x] == "x" || grid[previousHit.y + 1][previousHit.x] == "m") this._aiLevel2(grid, previousHit);
             randomCord = {x: previousHit.x, y: previousHit.y + 1};
-            value = this.shot(randomCord, grid);
-            if(value > 0) pHit.direction = 3;
+            // value = this.shot(randomCord, grid);
+            // if(value > 1) pHit.direction = 3;
+            // else previosHit = new PreviousHit();
+            direction = 3;
+         }
+         else{
+           //north
+           if(previousHit.y - 1 < 0 || grid[previousHit.y - 1][previousHit.x] == "x" || grid[previousHit.y - 1][previousHit.x] == "m") this._aiLevel2(grid, previousHit);
+           randomCord = {x: previousHit.x, y: previousHit.y - 1};
+           direction = 1;
+         }
+       } else {
+         if(plusOrMinus) {
+            //est
+            if(previousHit.x + 1 > grid[0].length || grid[previousHit.y][previousHit.x+1] == "x" || grid[previousHit.y][previousHit.x+1] == "m") this._aiLevel2(grid, previousHit);
+            randomCord = {x: previousHit.x +1, y: previousHit.y};
+            direction = 2;
+         }
+         else{
+           //west
+           if(previousHit.x - 1 < 0 || grid[previousHit.y][previousHit.x - 1] == "x" || grid[previousHit.y][previousHit.x - 1] == "m") this._aiLevel2(grid, previousHit);
+           randomCord = {x: previousHit.x -1, y: previousHit.y};
+           direction = 4;
          }
        }
-     }
+    }
+    else{
+      switch(previousHit.direction){
+        case 1:
+          if(previousHit.y - 1 < 0 || grid[previousHit.y - 1][previousHit.x] == "x" || grid[previousHit.y - 1][previousHit.x] == "m"){
+            previousHit.direction = 0;
+            this._aiLevel2(grid, previousHit);
+          }
+          randomCord = {x: previousHit.x, y: previousHit.y - 1};
+          break;
+        case 2:
+          if(previousHit.x + 1 > grid[0].length || grid[previousHit.y][previousHit.x+1] == "x" || grid[previousHit.y][previousHit.x+1] == "m"){
+            previousHit.direction = 0;
+            this._aiLevel2(grid, previousHit);
+          }
+          randomCord = {x: previousHit.x +1, y: previousHit.y};
+          break;
+        case 3:
+          if(previousHit.y + 1 > grid.length || grid[previousHit.y + 1][previousHit.x] == "x" || grid[previousHit.y + 1][previousHit.x] == "m"){
+            previousHit.direction = 0;
+            this._aiLevel2(grid, previousHit);
+          }
+          randomCord = {x: previousHit.x, y: previousHit.y + 1};
+          break;
+        case 4:
+          if(previousHit.x - 1 < 0 || grid[previousHit.y][previousHit.x - 1] == "x" || grid[previousHit.y][previousHit.x - 1] == "m"){
+            previousHit.direction = 0;
+            this._aiLevel2(grid, previousHit);
+          }
+          randomCord = {x: previousHit.x -1, y: previousHit.y};
+      }
+    }
+  }
+  var value = this.shot(randomCord, grid);
 };
