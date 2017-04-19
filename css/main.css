@@ -167,7 +167,42 @@
   animation-iteration-count: infinite;
 }
 
+#game-over {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  background: #4CADDB;
+  width: 80%;
+  height: 600px;
+  margin: 5% auto;
+  animation-name: wave;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
 
+#game-over div h1 {
+  font-size: 150px;
+  text-shadow: 2px 2px #68715B;
+}
+
+#win {
+  background: rgba(0,0,0,0);
+}
+
+#win h1 {
+  background: inherit;
+  color: #DAF7A6;
+}
+
+#loss {
+    background: rgba(0,0,0,0);
+}
+
+#loss h1 {
+  background: inherit;
+  color: rgb(255, 100, 100);
+}
 
 .fb{
   background: rgba(0,0,0,0);
@@ -308,4 +343,26 @@
   animation-name: glow;
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
+}
+
+footer {
+  position:fixed;
+  left:200px;
+  bottom:0px;
+  height:30px;
+  width:100%;
+  color: white;
+  background-color: #EEEEEE;
+  color: #A3A09B;
+  text-shadow: 1px 1px #68715B;
+
+}
+
+footer a {
+  text-shadow: none;
+}
+
+footer a:hover{
+    text-decoration: none;
+
 }

@@ -8,6 +8,7 @@ $(document).ready(function(){
  settings();
  $("#settings").toggle();
  $("#game-play").toggle();
+ $("#game-over").toggle();
  start();
  selectShip(playerFleet);
  rotateShip();
@@ -39,7 +40,7 @@ function settings(fleet){
 function setDifficulty(fleet) {
   $(".sb").click(function(){
     if($(this).hasClass("easy")) fleet.aiLevel = 1;
-    if($(this).hasClass("hard")) fleet.aiLevel = 2;
+    if($(this).hasClass("hard")) fleet.aiLevel = 1;
     console.log(fleet.aiLevel);
     $("#intro").toggle();
     $("#settings").toggle();
@@ -170,12 +171,6 @@ function fire(fleetAttacker, fleetTarget){
 
 function updateGrid(target, grid){
   var hitAndMiss = shotsMap(grid);
-    // for(var y = 0; y < grid.length; y++){
-    //    for(x = 0; x < grid[y].length; x++){
-    //      if(grid[y][x] == "x") hitAndMiss.push({x: x, y: y, hm: "x"});
-    //      if(grid[y][x] == "m") hitAndMiss.push({x: x, y: y, hm: "m"});
-    //    }
-    //  }
     _.each(hitAndMiss, function(elem){
         var t = $(target).children()[elem.y];
         t = $(t).children()[elem.x];
@@ -211,12 +206,23 @@ if(hitsB){
 
 }
 
+function playAgain(){
+  $("#play-again").click(function(){
+    location.reload();
+  });
+}
+
 function checkWinner(fleetA, fleetB){
   if(fleetB.loss()) {
-    alert("YOU WON AYYY");
-    location.reload();
+    $("#game-play").toggle();
+    $("#stats").toggle();
+    $("#game-over").toggle();
+    $("#loss").toggle();
   } if(fleetA.loss()){
-    alert("GAME OVER");
-    location.reload();
+    $("#game-play").toggle();
+    $("#stats").toggle();
+    $("#game-over").toggle();
+    $("#win").toggle();
   }
+  playAgain();
 }
