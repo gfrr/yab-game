@@ -3,6 +3,7 @@ $(document).ready(function(){
  var enemyFleet = new Fleet();
  $("#stats").toggle();
  enemyFleet.aiLevel = 1;
+ var pHit = new PreviousHit();
  setDifficulty(enemyFleet);
  enemyFleet.generateEnemyFleet();
  settings();
@@ -22,7 +23,7 @@ $(document).ready(function(){
      appendGrid("#enemy-ships", 10);
      $("#enemy-ships").css("border-bottom", "10px solid rgb(255, 100, 100)");
      $("#enemy-ships").toggle();
-     fire(playerFleet, enemyFleet);
+     fire(playerFleet, enemyFleet, pHit);
      $("#stats").toggle();
      clearInterval(gameReady);
    }
@@ -40,7 +41,7 @@ function settings(fleet){
 function setDifficulty(fleet) {
   $(".sb").click(function(){
     if($(this).hasClass("easy")) fleet.aiLevel = 1;
-    if($(this).hasClass("hard")) fleet.aiLevel = 1;
+    if($(this).hasClass("hard")) fleet.aiLevel = 2;
     console.log(fleet.aiLevel);
     $("#intro").toggle();
     $("#settings").toggle();
@@ -141,7 +142,7 @@ function generateShip(target, size){
 }
 
 
-function fire(fleetAttacker, fleetTarget){
+function fire(fleetAttacker, fleetTarget, previousHit){
 
             $(".col").on("click", function(event){
               if($(this).parent().parent().is("#enemy-ships")){
@@ -158,11 +159,11 @@ function fire(fleetAttacker, fleetTarget){
                   else $(this).addClass("miss");
 
                 var interval = setTimeout(function(){
-                  fleetTarget.aiShoot(fleetAttacker.grid);
+                  fleetTarget.aiShoot(fleetAttacker.grid, previousHit);
                 updateGrid("#player-ships", fleetAttacker.grid);
                 updateStats(fleetAttacker, fleetTarget);
                 checkWinner(fleetAttacker, fleetTarget);
-              }, 500);
+              }, 200);
                 }
               }
 
