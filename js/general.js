@@ -248,15 +248,23 @@ function playAgain(){
 
 function checkWinner(fleetA, fleetB){
   var playerWin = fleetB.loss(), cpuWin = fleetA.loss();
-  if(fleetB.loss()) {
+  if(playerWin && cpuWin){
     $("#game-play").toggle();
     $("#stats").toggle();
     $("#game-over").toggle();
+    $("#win").toggle();
     $("#loss").toggle();
-  } if(fleetA.loss()){
+  } else if (fleetB.loss()) {
     $("#game-play").toggle();
     $("#stats").toggle();
     $("#game-over").toggle();
+    $("#tie").toggle();
+    $("#loss").toggle();
+  } else if(fleetA.loss()){
+    $("#game-play").toggle();
+    $("#stats").toggle();
+    $("#game-over").toggle();
+    $("#tie").toggle();
     $("#win").toggle();
   }
   playAgain();
