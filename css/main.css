@@ -204,6 +204,15 @@
   color: rgb(255, 100, 100);
 }
 
+#tie {
+  background: inherit;
+}
+
+#tie h1 {
+  background: inherit;
+  color: #F6F955; 
+}
+
 .fb{
   background: rgba(0,0,0,0);
 }
@@ -343,6 +352,10 @@
   animation-name: glow;
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
+}
+
+.sunk {
+  background: #a34242;
 }
 
 footer {

@@ -14,8 +14,6 @@ Fleet.prototype.generateEnemyFleet = function(){
   fleet.push(new Ship(4)); //battleship
   fleet.push(new Ship(3)); //cruiser
   fleet.push(new Ship(2)); //destroyer
-  fleet.push(new Ship(2)); //destroyer
-  fleet.push(new Ship(1)); //submarine
   fleet.push(new Ship(1)); //submarine
   _.each(fleet, function(ship){
     ship.draw(context.grid);
@@ -95,10 +93,10 @@ Fleet.prototype.loss = function(){
   var test = this.grid.slice(0);
   return _.filter(_.flatten(test), function(elem){
     if(elem == "x") return elem;
-  }).length == 18;
+  }).length == 15;
 };
 
-Fleet.prototype.aiShoot = function (grid, previousHit){
+Fleet.prototype.aiShoot = function (grid, hits){
   var alreadyHit = shotsMap(grid);
 
   if(this.aiLevel == 1){
@@ -110,7 +108,7 @@ Fleet.prototype.aiShoot = function (grid, previousHit){
     console.log(randomCord);
     return(this.shot(randomCord, grid));
   } else{
-      return this._cheatingAi(grid, previousHit);
+      return this._cheatingAi(grid, hits);
   }
 };
 
@@ -135,7 +133,7 @@ function PreviousHit(x,y) {
 }
 
 //placeholder "hard" difficulty
-Fleet.prototype._cheatingAi = function(grid, previousHit){
+Fleet.prototype._cheatingAi = function(grid, hits){
   var voids = [];
   var positions = [];
   var target;
@@ -148,7 +146,6 @@ Fleet.prototype._cheatingAi = function(grid, previousHit){
   }
 
   if(Math.floor(Math.random()*2)){
-    console.log("missing");
     target = voids[Math.floor(Math.random()*voids.length)];
   }
   else  target = positions[Math.floor(Math.random()*positions.length)];
