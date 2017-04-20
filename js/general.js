@@ -197,7 +197,6 @@ function updateStats(fleetA, fleetB){
  });
 
 var accA = 0, accB = 0;
-//fix me
  if(hitsA){
    accA = Math.floor((hitsA/(missA+hitsA))*100);
    if (accA > 100) accA = 100;

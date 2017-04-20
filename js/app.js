@@ -155,59 +155,59 @@ Fleet.prototype._cheatingAi = function(grid, previousHit){
   return this.shot(target, grid);
 };
 
-
-function checkBoundaries(direction, cords, grid){
-  //1 nord 2 est 3 sud 4 ovest
-  var alreadyHit = shotsMap(grid);
-  var testCord = cords;
-  switch(direction){
-    case 1:
-      if(cords.y-1 > 0) {
-        testCord.y--;
-       return  !_.some(alreadyHit, testCord);
-      }
-       return false;
-    case 2:
-      if(cords.x + 1 < 10){
-        testCord.x++;
-        return !_.some(alreadyHit, testCord);
-      }
-      return false;
-    case 3:
-      if(cords.y + 1 < 10){
-        testCord.y++;
-        return !_.some(alreadyHit, testCord);
-      }
-      return false;
-    case 4:
-      if(cords.x - 1 > 0){
-        testCord.x++;
-        return !_.some(alreadyHit, testCord);
-      }
-      return false;
-    default:
-       return false;
-     }
-}
-
-function generateCordsByDirection(direction, cords, grid){
-    switch(direction){
-      case 1:
-        if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y - 1};
-        return undefined;
-      case 2:
-        if(checkBoundaries(direction, cords, grid)) return {x:cords.x+1, y:cords.y};
-        return undefined;
-      case 3:
-        if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y +1};
-        return undefined;
-      case 4:
-        if(checkBoundaries(direction, cords, grid)) return {x:cords.x-1, y:cords.y};
-        return undefined;
-      default:
-        return undefined;
-    }
-}
+// 
+// function checkBoundaries(direction, cords, grid){
+//   //1 nord 2 est 3 sud 4 ovest
+//   var alreadyHit = shotsMap(grid);
+//   var testCord = cords;
+//   switch(direction){
+//     case 1:
+//       if(cords.y-1 > 0) {
+//         testCord.y--;
+//        return  !_.some(alreadyHit, testCord);
+//       }
+//        return false;
+//     case 2:
+//       if(cords.x + 1 < 10){
+//         testCord.x++;
+//         return !_.some(alreadyHit, testCord);
+//       }
+//       return false;
+//     case 3:
+//       if(cords.y + 1 < 10){
+//         testCord.y++;
+//         return !_.some(alreadyHit, testCord);
+//       }
+//       return false;
+//     case 4:
+//       if(cords.x - 1 > 0){
+//         testCord.x++;
+//         return !_.some(alreadyHit, testCord);
+//       }
+//       return false;
+//     default:
+//        return false;
+//      }
+// }
+//
+// function generateCordsByDirection(direction, cords, grid){
+//     switch(direction){
+//       case 1:
+//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y - 1};
+//         return undefined;
+//       case 2:
+//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x+1, y:cords.y};
+//         return undefined;
+//       case 3:
+//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y +1};
+//         return undefined;
+//       case 4:
+//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x-1, y:cords.y};
+//         return undefined;
+//       default:
+//         return undefined;
+//     }
+// }
 
 /*
 function shotsMap(grid){
@@ -222,23 +222,26 @@ function shotsMap(grid){
 */
 
 
-Fleet.prototype._aiLevel2 = function(grid, previousHit){
-  var alreadyHit = shotsMap(grid);
-  var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-  var dir;
-  if(previousHit.x === undefined){
-      console.log("case1: no previous hits");
-      if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
-    } else {
-           if(previousHit.direction.length < 2){
-             var cord = generateCordsByDirection(previousHit.direction[0], previousHit, grid);
-             if(cord === undefined){
-              
-             }
-           }
- }
-
-};
+// Fleet.prototype._aiLevel2 = function(grid, previousHit){
+//   var alreadyHit = shotsMap(grid);
+//   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+//   var dir;
+//   if(previousHit.x === undefined){
+//       console.log("case1: no previous hits");
+//       if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
+//     } else {
+//            if(previousHit.direction.length < 2){
+//              var cord = generateCordsByDirection(previousHit.direction[0], previousHit, grid);
+//              if(cord === undefined){
+//                 previousHit = new PreviousHit();
+//              } else {
+//
+//              }
+//
+//            }
+//  }
+//
+// };
 
 
 function opposite(direction){
