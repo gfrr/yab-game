@@ -345,6 +345,10 @@
   animation-timing-function: ease-in-out;
 }
 
+.sunk {
+  background: #a34242;
+}
+
 footer {
   position:fixed;
   left:200px;

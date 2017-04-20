@@ -1,9 +1,10 @@
 $(document).ready(function(){
  var playerFleet = new Fleet();
  var enemyFleet = new Fleet();
+ var playerHits = 0, enemyHits = 0;
  $("#stats").toggle();
  enemyFleet.aiLevel = 1;
- var pHit = new PreviousHit();
+
  setDifficulty(enemyFleet);
  enemyFleet.generateEnemyFleet();
  settings();
@@ -23,7 +24,7 @@ $(document).ready(function(){
      appendGrid("#enemy-ships", 10);
      $("#enemy-ships").css("border-bottom", "10px solid rgb(255, 100, 100)");
      $("#enemy-ships").toggle();
-     fire(playerFleet, enemyFleet, pHit);
+     fire(playerFleet, enemyFleet, playerHits, enemyHits);
      $("#stats").toggle();
      clearInterval(gameReady);
    }
@@ -142,7 +143,7 @@ function generateShip(target, size){
 }
 
 
-function fire(fleetAttacker, fleetTarget, previousHit){
+function fire(fleetAttacker, fleetTarget, hitsA, hitsB){
 
             $(".col").on("click", function(event){
               if($(this).parent().parent().is("#enemy-ships")){
@@ -154,13 +155,16 @@ function fire(fleetAttacker, fleetTarget, previousHit){
 
                 var playerHit = fleetAttacker.shot(cord, fleetTarget.grid);
 
-                 if(playerHit) $(this).addClass("hit");
-
+                 if(playerHit){
+                   $(this).addClass("hit hitB");
+                   $(this).attr("value", playerHit);
+                 }
                   else $(this).addClass("miss");
+                  destroyEnemyShips(playerHit);
 
                 var interval = setTimeout(function(){
-                  fleetTarget.aiShoot(fleetAttacker.grid, previousHit);
-                updateGrid("#player-ships", fleetAttacker.grid);
+                var cpuHit = fleetTarget.aiShoot(fleetAttacker.grid, hitsB);
+                updateGrid("#player-ships", fleetAttacker.grid, hitsB, cpuHit);
                 updateStats(fleetAttacker, fleetTarget);
                 checkWinner(fleetAttacker, fleetTarget);
               }, 200);
@@ -170,15 +174,38 @@ function fire(fleetAttacker, fleetTarget, previousHit){
           });
 }
 
-function updateGrid(target, grid){
+function destroyEnemyShips(size){
+  if($(".hitB[value=" + size + "]").length == size){
+    $(".hitB[value="+size+"]").addClass("sunk");
+  }
+}
+
+
+function updateGrid(target, grid, hits, size){
   var hitAndMiss = shotsMap(grid);
     _.each(hitAndMiss, function(elem){
         var t = $(target).children()[elem.y];
         t = $(t).children()[elem.x];
-        if(elem.hm == "x") $(t).addClass("hit");
+        if(elem.hm == "x"){
+          $(t).addClass("hit hitA");
+          console.log($(".hitA[value ="+size+"]").length);
+          if(!($(t).attr("value"))){
+
+            $(t).attr("value", size);
+
+          }
+        }
         else  $(t).addClass("miss");
+        destroyPlayerShips(size);
         $(t).removeClass("final");
     });
+}
+
+
+function destroyPlayerShips(size){
+   if($(".hitA[value=" + size + "]").length == size){
+     $(".hitA[value="+size+"]").addClass("sunk");
+   }
 }
 
 function updateStats(fleetA, fleetB){
@@ -200,16 +227,16 @@ var accA = 0, accB = 0;
  if(hitsA){
    accA = Math.floor((hitsA/(missA+hitsA))*100);
    if (accA > 100) accA = 100;
-   if(missA) $("#player-stats").html("<h2>Accuracy: " + accA + "%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
-   else $("#player-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
-} else $("#player-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
+   if(missA) $("#player-stats").html("<h2>Accuracy: " + accA + "%</h2> <h2>Hits Left: " + (15-hitsB) + "</h2>");
+   else $("#player-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (15-hitsB) + "</h2>");
+} else $("#player-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (15-hitsB) + "</h2>");
 
 if(hitsB){
   accB = Math.floor((hitsB/(missB+hitsB))*100);
   if (accB > 100) accB = 100;
-  if(missB) $("#enemy-stats").html("<h2>Accuracy: " + accB + "%</h2> <h2>Hits Left: " + (18 - hitsA) + "</h2>" );
-  else $("#enemy-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (18-hitsA) + "</h2>");
-} else $("#enemy-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (18-hitsA) + "</h2>");
+  if(missB) $("#enemy-stats").html("<h2>Accuracy: " + accB + "%</h2> <h2>Hits Left: " + (15 - hitsA) + "</h2>" );
+  else $("#enemy-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (15-hitsA) + "</h2>");
+} else $("#enemy-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (15-hitsA) + "</h2>");
 
 }
 
@@ -220,6 +247,7 @@ function playAgain(){
 }
 
 function checkWinner(fleetA, fleetB){
+  var playerWin = fleetB.loss(), cpuWin = fleetA.loss();
   if(fleetB.loss()) {
     $("#game-play").toggle();
     $("#stats").toggle();
