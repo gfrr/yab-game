@@ -96,9 +96,9 @@ Fleet.prototype.loss = function(){
   }).length == 15;
 };
 
-Fleet.prototype.aiShoot = function (grid, hits){
+Fleet.prototype.aiShoot = function (grid, previousHit){
   var alreadyHit = shotsMap(grid);
-
+  console.log(previousHit);
   if(this.aiLevel == 1){
     var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
     if(_.some(alreadyHit, randomCord)){
@@ -108,7 +108,7 @@ Fleet.prototype.aiShoot = function (grid, hits){
     console.log(randomCord);
     return(this.shot(randomCord, grid));
   } else{
-      return this._cheatingAi(grid, hits);
+      return this._aiLevel2(grid, previousHit);
   }
 };
 
@@ -121,15 +121,6 @@ function shotsMap(grid){
      }
   }
   return alreadyHit;
-}
-
-function PreviousHit(x,y) {
- this.x = x;
- this.y = y;
- this.size = 0;
- this.direction = [1,2,3,4];
- this.hits = 0;
- this.tries = 0;
 }
 
 //placeholder "hard" difficulty
@@ -152,95 +143,6 @@ Fleet.prototype._cheatingAi = function(grid, hits){
   return this.shot(target, grid);
 };
 
-//
-// function checkBoundaries(direction, cords, grid){
-//   //1 nord 2 est 3 sud 4 ovest
-//   var alreadyHit = shotsMap(grid);
-//   var testCord = cords;
-//   switch(direction){
-//     case 1:
-//       if(cords.y-1 > 0) {
-//         testCord.y--;
-//        return  !_.some(alreadyHit, testCord);
-//       }
-//        return false;
-//     case 2:
-//       if(cords.x + 1 < 10){
-//         testCord.x++;
-//         return !_.some(alreadyHit, testCord);
-//       }
-//       return false;
-//     case 3:
-//       if(cords.y + 1 < 10){
-//         testCord.y++;
-//         return !_.some(alreadyHit, testCord);
-//       }
-//       return false;
-//     case 4:
-//       if(cords.x - 1 > 0){
-//         testCord.x++;
-//         return !_.some(alreadyHit, testCord);
-//       }
-//       return false;
-//     default:
-//        return false;
-//      }
-// }
-//
-// function generateCordsByDirection(direction, cords, grid){
-//     switch(direction){
-//       case 1:
-//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y - 1};
-//         return undefined;
-//       case 2:
-//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x+1, y:cords.y};
-//         return undefined;
-//       case 3:
-//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y +1};
-//         return undefined;
-//       case 4:
-//         if(checkBoundaries(direction, cords, grid)) return {x:cords.x-1, y:cords.y};
-//         return undefined;
-//       default:
-//         return undefined;
-//     }
-// }
-
-/*
-function shotsMap(grid){
-  var alreadyHit = [];
-  for(var y = 0; y < grid.length; y++){
-     for(x = 0; x < grid[y].length; x++){
-       if(grid[y][x] == "x" || grid[y][x] == "m") alreadyHit.push({x: x, y: y, hm: grid[y][x]});
-     }
-  }
-  return alreadyHit;
-}
-*/
-
-
-// Fleet.prototype._aiLevel2 = function(grid, previousHit){
-//   var alreadyHit = shotsMap(grid);
-//   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-//   var dir;
-//   if(previousHit.x === undefined){
-//       console.log("case1: no previous hits");
-//       if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
-//     } else {
-//            if(previousHit.direction.length < 2){
-//              var cord = generateCordsByDirection(previousHit.direction[0], previousHit, grid);
-//              if(cord === undefined){
-//                 previousHit = new PreviousHit();
-//              } else {
-//
-//              }
-//
-//            }
-//  }
-//
-// };
-
-
 function opposite(direction){
   if(direction == 1) return 3;
   if(direction == 2) return 4;
@@ -248,205 +150,177 @@ function opposite(direction){
   if(direction == 4) return 2;
 
 }
-// Fleet.prototype._aiLevel2 = function(grid, previousHit){
-//   var alreadyHit = shotsMap(grid);
-//   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-//   var dir;
-//   if(previousHit.x === undefined){
-//     console.log("case1, no hits");
-//     if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
-//   } else {
-//       if(previousHit.tries < 5){
-//             console.log("case2, previous hit");
-//             switch(previousHit.direction[Math.floor(Math.random() * previousHit.direction.length)]){
-//               case 1:
-//                 randomCord = {x: previousHit.x, y: previousHit.y-1};
-//                 if(previousHit.y - 1 > 0 || _.some(alreadyHit,  randomCord)) {
-//                   previousHit.tries++;
-//                   _.remove(previousHit.directions, function(n){
-//                     return n == 1;
-//                   });
-//                   return this._aiLevel2(grid, previousHit);
-//                 }
-//                 dir = 1;
-//                 break;
-//               case 2:
-//                 randomCord = {x:previousHit.x+1, y:previousHit.y};
-//                 if(previousHit.x + 1 > 10 || _.some(alreadyHit, randomCord)) {
-//                   previousHit.tries++;
-//                   _.remove(previousHit.directions, function(n){
-//                     return n == 2;
-//                   });
-//                   return this._aiLevel2(grid, previousHit);
-//                 }
-//                 dir = 2;
-//                 break;
-//               case 3:
-//                 randomCord = {x:previousHit.x , y: previousHit.y + 1};
-//                 if(previousHit.y + 1 > 10 || _.some(alreadyHit, randomCord)){
-//                   previousHit.tries++;
-//                   _.remove(previousHit.directions, function(n){
-//                     return n == 3;
-//                   });
-//                   return this._aiLevel2(grid, previousHit);
-//                 }
-//
-//                 dir = 3;
-//                 break;
-//               case 4:
-//                 randomCord = {x: previousHit.x - 1, y:previousHit.y};
-//                 if(previousHit.x - 1 < 0 || _.some(alreadyHit, randomCord)){
-//                   previousHit.tries++;
-//                   _.remove(previousHit.directions, function(n){
-//                     return n == 4;
-//                   });
-//                   return this._aiLevel2(grid, previousHit);
-//                 }
-//
-//                 dir = 4;
-//                 break;
-//
-//           }
-//           }
-//       }
-//    console.log("shooting..");
-//    var value = this.shot(randomCord, grid);
-//    if(value > 1){
-//      console.log("hit a big ship");
-//      previousHit.hits++;
-//      if(previousHit.hits < value){
-//        console.log("updating the previousHit coordinates");
-//        previousHit.dir = [dir];
-//        previousHit.x = randomCord.x;
-//        previousHit.y = randomCord.y;
-//        previousHit.size = value;
-//        console.log(previousHit);
-//
-//      } else previousHit = new PreviousHit();
-//
-//    } else if(value == 1) {
-//      console.log("ship sunk");
-//      previousHit = new PreviousHit();
-//    } else {
-//      if(previousHit.x !== undefined){
-//        _.remove(previousHit.directions, function(n){
-//           return n == dir;
-//        });
-//        console.log("miss, trying another direction");
-//      } else {
-//        previousHit = new PreviousHit();
-//      }
-//    }
-//    return value;
-// };
 
-// Fleet.prototype._aiLevel2 = function(grid, previousHit){
-//   var alreadyHit = shotsMap(grid);
-//   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
-//   var direction = 0; //1 north 2 est 3 south 4 west
-//   if(previousHit.x === undefined) {
-//     if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
-//     console.log("case1");
-//     console.log(previousHit);
-//   }
-//   else{
-//     if(!previousHit.direction){
-//       if(previousHit.tries < 4){
-//       console.log("case2");
-//       console.log(previousHit.y + 1, previousHit.x + 1);
-//       var flatOrStanding = Math.floor(Math.random() * 2), plusOrMinus = Math.floor(Math.random() * 2);
-//        if(flatOrStanding){
-//          if(plusOrMinus) {
-//             //south
-//             if(previousHit.y + 1 > 10 || grid[previousHit.y + 1][previousHit.x] == "x" || grid[previousHit.y + 1][previousHit.x] == "m") return this._aiLevel2(grid, previousHit);
-//             randomCord = {x: previousHit.x, y: previousHit.y + 1};
-//             previousHit.direction = 3;
-//             previousHit.tries++;
-//          }
-//          else{
-//            //north
-//            if(previousHit.y - 1 < 0 || grid[previousHit.y - 1][previousHit.x] == "x" || grid[previousHit.y - 1][previousHit.x] == "m"){
-//              previousHit.tries++;
-//              return this._aiLevel2(grid, previousHit);
-//            }
-//            randomCord = {x: previousHit.x, y: previousHit.y - 1};
-//            previousHit.direction = 1;
-//            previousHit.tries++;
-//          }
-//        } else {
-//          if(plusOrMinus) {
-//             //est
-//             if(previousHit.x + 1 > 10 || grid[previousHit.y][previousHit.x+1] == "x" || grid[previousHit.y][previousHit.x+1] == "m") {
-//               previousHit.tries++;
-//               return this._aiLevel2(grid, previousHit);
-//             }
-//             randomCord = {x: previousHit.x +1, y: previousHit.y};
-//             previousHit.direction = 2;
-//             previousHit.tries++;
-//          }
-//          else{
-//            //west
-//            if(previousHit.x - 1 < 0 || grid[previousHit.y][previousHit.x - 1] == "x" || grid[previousHit.y][previousHit.x - 1] == "m") {
-//              previousHit.tries++;
-//              return this._aiLevel2(grid, previousHit);
-//            }
-//            randomCord = {x: previousHit.x -1, y: previousHit.y};
-//            previousHit.direction = 4;
-//            previousHit.tries++;
-//          }
-//        }
-//     }
-//     else{
-//       console.log("case3");
-//       switch(previousHit.direction){
-//         case 1:
-//           if(previousHit.y - 1 < 0 || grid[previousHit.y - 1][previousHit.x] == "x" || grid[previousHit.y - 1][previousHit.x] == "m"){
-//             previousHit.direction = 0;
-//             return this._aiLevel2(grid, previousHit);
-//           }
-//           randomCord = {x: previousHit.x, y: previousHit.y - 1};
-//           break;
-//         case 2:
-//           if(previousHit.x + 1 > 10 || grid[previousHit.y][previousHit.x+1] == "x" || grid[previousHit.y][previousHit.x+1] == "m"){
-//             previousHit.direction = 0;
-//             return this._aiLevel2(grid, previousHit);
-//           }
-//           randomCord = {x: previousHit.x +1, y: previousHit.y};
-//           break;
-//         case 3:
-//           if(previousHit.y + 1 > 10 || grid[previousHit.y + 1][previousHit.x] == "x" || grid[previousHit.y + 1][previousHit.x] == "m"){
-//             previousHit.direction = 0;
-//             return this._aiLevel2(grid, previousHit);
-//           }
-//           randomCord = {x: previousHit.x, y: previousHit.y + 1};
-//           break;
-//         case 4:
-//           if(previousHit.x - 1 < 0 || grid[previousHit.y][previousHit.x - 1] == "x" || grid[previousHit.y][previousHit.x - 1] == "m"){
-//             previousHit.direction = 0;
-//             return this._aiLevel2(grid, previousHit);
-//           }
-//           randomCord = {x: previousHit.x -1, y: previousHit.y};
-//       }
-//     }
-//   }
-//   }
-//   var value  = this.shot(randomCord, grid);
-//   if(value > 1){
-//     previousHit.hits++;
-//     previousHit.size = value;
-//     if(previousHit.hits < previousHit.size){
-//       previousHit.x = randomCord.x;
-//       previousHit.y = randomCord.y;
-//     } else {
-//       previousHit = new PreviousHit();
-//     }
-//   } else if(value === 0){
-//     if(previousHit.size){
-//       if(previousHit.hits > 1){
-//         previousHit.direction = opposite(previousHit.direction);
-//       } else
-//       previousHit.direction = 0;
-//     }
-//   } else previousHit = new PreviousHit();
-//   return value;
-// };
+function checkBoundaries(direction, cords, grid){
+  //1 nord 2 est 3 sud 4 ovest
+  var alreadyHit = shotsMap(grid);
+  var testCord = cords;
+  switch(direction){
+    case 1:
+      if(cords.y-1 > 0) {
+        testCord.y--;
+       return  !_.some(alreadyHit, testCord);
+      }
+       return false;
+    case 2:
+      if(cords.x + 1 < 10){
+        testCord.x++;
+        return !_.some(alreadyHit, testCord);
+      }
+      return false;
+    case 3:
+      if(cords.y + 1 < 10){
+        testCord.y++;
+        return !_.some(alreadyHit, testCord);
+      }
+      return false;
+    case 4:
+      if(cords.x - 1 > 0){
+        testCord.x++;
+        return !_.some(alreadyHit, testCord);
+      }
+      return false;
+    default:
+       return false;
+     }
+}
+
+function generateCordsByDirection(direction, cords, grid){
+    switch(direction){
+      case 1:
+        if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y - 1};
+        return undefined;
+      case 2:
+        if(checkBoundaries(direction, cords, grid)) return {x:cords.x+1, y:cords.y};
+        return undefined;
+      case 3:
+        if(checkBoundaries(direction, cords, grid)) return {x:cords.x, y:cords.y +1};
+        return undefined;
+      case 4:
+        if(checkBoundaries(direction, cords, grid)) return {x:cords.x-1, y:cords.y};
+        return undefined;
+      default:
+        return undefined;
+    }
+}
+
+function PreviousHit(x,y) {
+ this.x = x;
+ this.y = y;
+ this.size = 0;
+ this.direction = [1,2,3,4];
+ this.hits = 0;
+ this.tries = 0;
+}
+
+
+Fleet.prototype._aiLevel2 = function(grid, previousHit){
+   var alreadyHit = shotsMap(grid);
+   var randomCord = {x: Math.floor(Math.random()*10), y: Math.floor(Math.random()*10)};
+   var dir = 0, testCord;
+   if(previousHit.x === undefined){
+     if(_.some(alreadyHit, randomCord)) return this._aiLevel2(grid, previousHit);
+   } else {
+       console.log(previousHit);
+       console.log("case 2, previous hit");
+       console.log(previousHit.direction);
+       console.log(previousHit.direction[Math.floor(Math.random() * previousHit.direction.length)]);
+       switch(previousHit.direction[Math.floor(Math.random()*previousHit.direction.length)]){
+         case 1:
+          console.log("looking north..");
+          testCord = generateCordsByDirection(1, previousHit, grid);
+          if(testCord === undefined){
+            _.remove(previousHit.directions, function(n){
+                               return n != 1;
+                             });
+            previousHit.tries++;
+            return this._aiLevel2(grid, previousHit);
+          }
+           randomCord = testCord;
+           dir = [1];
+           break;
+
+          case 2:
+            console.log("looking east..");
+            testCord = generateCordsByDirection(2, previousHit, grid);
+            if(testCord === undefined){
+              _.remove(previousHit.directions, function(n){
+                                 return n != 2;
+                               });
+              previousHit.tries++;
+              return this._aiLevel2(grid, previousHit);
+            }
+             randomCord = testCord;
+             dir = [2];
+             break;
+
+          case 3:
+            console.log("looking south..");
+            testCord = generateCordsByDirection(3, previousHit, grid);
+            if(testCord === undefined){
+              _.remove(previousHit.directions, function(n){
+                                 return n != 3;
+                               });
+              previousHit.tries++;
+              return this._aiLevel2(grid, previousHit);
+            }
+             randomCord = testCord;
+             dir = [3];
+             break;
+           case 4:
+             console.log("looking west..");
+             testCord = generateCordsByDirection(4, previousHit, grid);
+             if(testCord === undefined){
+               _.remove(previousHit.directions, function(n){
+                                  return n != 4;
+                                });
+               previousHit.tries++;
+               return this._aiLevel2(grid, previousHit);
+             }
+              randomCord = testCord;
+              dir = [4];
+              break;
+
+          }
+
+     }
+    console.log("shooting...");
+    var value = this.shot(randomCord, grid);
+    console.log(value);
+       if(value > 1){
+         if(previousHit.size > 0){
+           if(previousHit.size == value){
+             previousHit.hits++;
+             if(previousHit.hits < value){
+               previousHit.direction = dir;
+               previousHit.x = randomCord.x;
+               previousHit.y = randomCord.y;
+             } else {
+               previousHit = new PreviousHit();
+             }
+           }
+         } else {
+            previousHit.size = value;
+            previousHit.hits++;
+          
+            previousHit.x = randomCord.x;
+            previousHit.y = randomCord.y;
+         }
+
+       }
+       else if (value == 1) previousHit = new PreviousHit();
+       else {
+          if(previousHit.x !== undefined){
+            _.remove(previousHit.directions, function(n){
+                               return n != dir[0];
+                             });
+            previousHit.tries++;
+            if(previousHit.direction.length  < 1) previousHit = new PreviousHit();
+
+          } else {
+            previousHit = new PreviousHit();
+          }
+       }
+   return value;
+
+};

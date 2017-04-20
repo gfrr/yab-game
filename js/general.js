@@ -1,10 +1,9 @@
 $(document).ready(function(){
  var playerFleet = new Fleet();
  var enemyFleet = new Fleet();
- var playerHits = 0, enemyHits = 0;
  $("#stats").toggle();
  enemyFleet.aiLevel = 1;
-
+ var pHit = new PreviousHit();
  setDifficulty(enemyFleet);
  enemyFleet.generateEnemyFleet();
  settings();
@@ -24,7 +23,7 @@ $(document).ready(function(){
      appendGrid("#enemy-ships", 10);
      $("#enemy-ships").css("border-bottom", "10px solid rgb(255, 100, 100)");
      $("#enemy-ships").toggle();
-     fire(playerFleet, enemyFleet, playerHits, enemyHits);
+     fire(playerFleet, enemyFleet, pHit);
      $("#stats").toggle();
      clearInterval(gameReady);
    }
@@ -143,7 +142,7 @@ function generateShip(target, size){
 }
 
 
-function fire(fleetAttacker, fleetTarget, hitsA, hitsB){
+function fire(fleetAttacker, fleetTarget, hits){
 
             $(".col").on("click", function(event){
               if($(this).parent().parent().is("#enemy-ships")){
@@ -162,12 +161,12 @@ function fire(fleetAttacker, fleetTarget, hitsA, hitsB){
                   else $(this).addClass("miss");
                   destroyEnemyShips(playerHit);
 
-                var interval = setTimeout(function(){
-                var cpuHit = fleetTarget.aiShoot(fleetAttacker.grid, hitsB);
-                updateGrid("#player-ships", fleetAttacker.grid, hitsB, cpuHit);
+                  console.log(hits);
+                var cpuHit = fleetTarget.aiShoot(fleetAttacker.grid, hits);
+                updateGrid("#player-ships", fleetAttacker.grid, cpuHit);
                 updateStats(fleetAttacker, fleetTarget);
                 checkWinner(fleetAttacker, fleetTarget);
-              }, 200);
+
                 }
               }
 
@@ -181,7 +180,7 @@ function destroyEnemyShips(size){
 }
 
 
-function updateGrid(target, grid, hits, size){
+function updateGrid(target, grid, size){
   var hitAndMiss = shotsMap(grid);
     _.each(hitAndMiss, function(elem){
         var t = $(target).children()[elem.y];
