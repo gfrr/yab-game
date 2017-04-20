@@ -195,13 +195,20 @@ function updateStats(fleetA, fleetB){
      if(elem.hm == "x") hitsB++;
      else missB++;
  });
+
+var accA = 0, accB = 0;
+//fix me
  if(hitsA){
-   if(missA) $("#player-stats").html("<h2>Accuracy: " + Math.floor((hitsA/missA)*100) + "%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
+   accA = Math.floor((hitsA/(missA+hitsA))*100);
+   if (accA > 100) accA = 100;
+   if(missA) $("#player-stats").html("<h2>Accuracy: " + accA + "%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
    else $("#player-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
 } else $("#player-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (18-hitsB) + "</h2>");
 
 if(hitsB){
-  if(missB) $("#enemy-stats").html("<h2>Accuracy: " + Math.floor((hitsB/missB)*100) + "%</h2> <h2>Hits Left: " + (18 - hitsA) + "</h2>" );
+  accB = Math.floor((hitsB/(missB+hitsB))*100);
+  if (accB > 100) accB = 100;
+  if(missB) $("#enemy-stats").html("<h2>Accuracy: " + accB + "%</h2> <h2>Hits Left: " + (18 - hitsA) + "</h2>" );
   else $("#enemy-stats").html("<h2>Accuracy: 100%</h2> <h2>Hits Left: " + (18-hitsA) + "</h2>");
 } else $("#enemy-stats").html("<h2>Accuracy: 0%</h2> <h2>Hits Left: " + (18-hitsA) + "</h2>");
 
